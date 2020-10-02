@@ -47,11 +47,21 @@ try:
 
     #获取week
     def week_num(row_num):
-        number = 0
-        for row_num_week in range(1,row_num):
-            if str(ws_in.cell(row_num_week,2).value) == "班":
-                number = number + 1
-        return number//3
+        if "本科临床医学专业" in ws_in.cell(1,1).value:
+            number = 0
+            for row_num_week in range(1,row_num):
+                if str(ws_in.cell(row_num_week,3).value) == "班":
+                    number = number + 1
+                    return number//3
+        else:
+            number = 1
+            while 1>0:
+                if "第{0}周".format(number) in str(ws_in.cell(row_num,1).value):
+                    return number
+                    break
+                else:
+                    number = number + 1
+    
 
     #获取class_num
     def class_num(column_num):
