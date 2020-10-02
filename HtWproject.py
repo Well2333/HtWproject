@@ -27,7 +27,7 @@ try:
     print("正在转换，请稍等片刻OvO")
 
     #获取转化格式后的文件
-    wb_in = xl.load_workbook("input.xlsx")
+    wb_in = xl.load_workbook("input.xlsx",data_only=True)
     ws_in = wb_in.active
 
     #执行拆分填充
@@ -47,13 +47,11 @@ try:
 
     #获取week
     def week_num(row_num):
-        number = 1
-        while 1>0:
-            if "第{0}周".format(number) in str(ws_in.cell(row_num,1).value):
-                return number
-                break
-            else:
+        number = 0
+        for row_num_week in range(1,row_num):
+            if str(ws_in.cell(row_num_week,2).value) == "班":
                 number = number + 1
+        return number//3
 
     #获取class_num
     def class_num(column_num):
@@ -131,4 +129,3 @@ except:
 os.remove(path+'\\'+"input.xlsx")
 #os.remove(path+'\\'+f)
 input("按任意键以退出程序:D")
-
