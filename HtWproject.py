@@ -11,8 +11,8 @@ try:
     path = os.getcwd()
     file = os.listdir(path)
     for f in file:
-        if ".xls" in f and ".xlsx" not in f:
-            print("已检测到课表:D！正在转换为.xlsx格式！")
+        if ".xls" in f:
+            print("已检测到课表:D！正在转换为input.xlsx！")
             transapp = win32.gencache.EnsureDispatch('Excel.Application')
             filetrans = transapp.Workbooks.Open(path+'\\'+f)
             filetrans.SaveAs(path+'\\'+"input.xlsx", FileFormat=51)
