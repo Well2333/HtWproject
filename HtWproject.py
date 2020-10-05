@@ -5,6 +5,8 @@ import os
 
 print("开发者@Well404，如有bug或建议请加QQ1070330078反馈并说明来意。")
 print("正在读取本文件夹内是否含有课表")
+Blacklist = ["国庆节放假","元旦放假"]
+error = 1
 
 try:
     #获取原文件并转换
@@ -20,8 +22,15 @@ try:
             transapp.Application.Quit()
             print("成功转换课表:D！")
             break
-        else:
-            print("未检测到课表T_T，请将课表复制到于本文件相同的文件夹中并重启程序")
+    else:
+        for count in range(0,5):
+            print("未检测到课表T_T，请将课表与程序放置于同一文件夹中并重启程序")
+
+    #检查是否残留导入课表
+    for f in file:
+        if "我是导入课表文件.csv" in f:
+            os.remove(path+'\\'+"我是导入课表文件.csv")
+            print('已清除旧的“我是导入课表文件.csv”')
 
     class_number = input("请输入班级名(需要和表内的班级名一致):")
     print("正在转换，请稍等片刻OvO")
@@ -116,8 +125,12 @@ try:
 
     for row_num in range(1,ws_in.max_row):
         if class_number == str(ws_in.cell(row_num,2).value):
+            error = 0
             for column_num in range(4,60,2):
                 if class_name_str(row_num,column_num) == class_name_str(row_num,column_num-2) and class_num(column_num) > 1:
+                    pass
+                elif class_name_str(row_num,column_num) in Blacklist:
+                    print("已跳过以下课程:{}".format(class_name_str(row_num,column_num)))
                     pass
                 else:
                     if str(class_name_str(row_num,column_num)) == "None":
@@ -129,13 +142,17 @@ try:
                         end = end_num(column_num)
                         week = week_num(row_num)
                         csv_writer.writerow([class_name,week_day,start,end,"","",week])
-    f.close()
-    print("转换完成:D，快去导入课表吧！")
+
+    if error == 0:
+        print("转换完成:D，快去导入课表吧！")
+        f.close()
+    else:
+        for count in range(0,5):
+            print("未检测到班级名X_X，请重启程序并输入正确的班级名称")
+        f.close()
+        os.remove(path+'\\'+"我是导入课表文件.csv")
+    os.remove(path+'\\'+"input.xlsx")
 except:
-    error_count = 10
-    if error_count >0:
+    for count in range(0,5):
         print("程序运行异常X_X，请联系开发者寻求帮助！！！")
-        error_count = error_count-1
-os.remove(path+'\\'+"input.xlsx")
-#os.remove(path+'\\'+f)
 input("按任意键以退出程序:D")
