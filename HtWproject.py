@@ -61,7 +61,7 @@ try:
             for row_num_week in range(1,row_num):
                 if str(ws_in.cell(row_num_week,3).value) == "班":
                     number = number + 1
-                    return number//3
+            return number//3
         else:
             number = 1
             while 1>0:
